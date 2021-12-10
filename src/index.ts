@@ -1,6 +1,7 @@
 import express from 'express';
-import { Request, Response } from 'express';
 import consoleTrack from './middlewares/consoleTrack';
+require('dotenv').config();
+
 const app = express();
 
 app.use(consoleTrack);

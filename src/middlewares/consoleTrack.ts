@@ -7,7 +7,7 @@ const consoleTrack = (req: any, res: any, next: any) => {
 
     const now = moment().utc();
 
-    const startTime = now.format('DD/MM/AA hh:mm:ss');
+    const startTime = now.format('DD/MM/YY hh:mm:ss');
 
     const method = req.method;
     const origin = req.get('host');
@@ -37,13 +37,18 @@ const consoleTrack = (req: any, res: any, next: any) => {
 
         console.log(
             startString +
-                ' From: "' +
+                ' From: ' +
+                color.yellow('"') +
                 origin +
-                '" To: "' +
+                ' - ' +
+                startTime +
+                color.yellow('"') +
+                ' To: ' +
+                color.yellow('"') +
                 method +
                 ': ' +
                 route +
-                '"' +
+                color.yellow('"') +
                 ' Status Code: ' +
                 statusCode +
                 ' Response Time: ' +
