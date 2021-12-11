@@ -5,19 +5,19 @@ import { color, log } from 'console-log-colors';
 const consoleTrack = (req: any, res: any, next: any) => {
     let startString: string;
 
-    const now = moment().utc();
+    const now: any = moment().utc();
 
-    const startTime = now.format('DD/MM/YY hh:mm:ss');
+    const startTime: string = now.format('DD/MM/YY hh:mm:ss');
 
-    const method = req.method;
-    const origin = req.get('host');
-    const route = req.url;
+    const method: string = req.method;
+    const origin: string = req.get('host');
+    const route: string = req.url;
 
     res.on('finish', () => {
         let statusCode: string;
         let timing: string = '';
 
-        const responseTime: any = moment().utc().diff(now);
+        const responseTime: number = moment().utc().diff(now);
 
         if (responseTime < 400) {
             timing = color.green(responseTime + ' ms ');
