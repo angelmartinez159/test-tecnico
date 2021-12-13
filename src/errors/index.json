@@ -1,0 +1,28 @@
+{
+    "UNEXPECTED_ERROR": {
+        "message": "An unexpected error occurred",
+        "status": 500,
+        "code": "500_000"
+    },
+    "EXCHANGE_NO_DATA_PROVIDED": {
+        "message": "Any data was provided from request",
+        "status": 400,
+        "code": "400_000"
+    },
+
+    "EXCHANGE_REQUEST_FAILED": {
+        "message": "The request to the exchange failed",
+        "status": 400,
+        "code": "400_002"
+    },
+    "DB_ERROR_INSERTING": {
+        "message": "An error occurred while inserting into the database",
+        "status": 400,
+        "code": "400_003"
+    },
+    "EXCHANGE_NO_DATA_FOUND": {
+        "message": "Any data was returned",
+        "status": 404,
+        "code": "404_001"
+    }
+}
