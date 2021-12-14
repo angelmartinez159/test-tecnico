@@ -9,3 +9,9 @@ build
 
 .env
 ./.env
+
+coverage
+./coverage
+
+.nyc_output
+./.nyc_output

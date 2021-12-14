@@ -43,3 +43,5 @@ app.listen(process.env.PORT, () => {
         console.log(color.red('Error init server :: '), process.env.PORT);
     }
 });
+
+export default app;

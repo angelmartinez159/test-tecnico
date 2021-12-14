@@ -4,7 +4,7 @@ import { exchangeConfig } from '../config';
 import { Error } from '../helpers/Error';
 import trmControllers from '../controllers/trm';
 import { TRM } from '../types/TRM';
-
+import _ from 'lodash';
 const router = Router();
 
 const TRMRouter = (app: Router) => {
@@ -53,7 +53,7 @@ const TRMRouter = (app: Router) => {
                 'EXCHANGE_NO_DATA_PROVIDED',
                 res
             );
-            next();
+            return next();
         }
 
         // Call to ExchangeRates API
@@ -75,12 +75,14 @@ const TRMRouter = (app: Router) => {
             // Verifying data from response
             if (!apiResponse || !apiResponse.data) {
                 Error('No data', 'EXCHANGE_NO_DATA_FOUND', res);
+                return next();
             }
 
             const { data }: any = apiResponse;
 
             if (!data.result || data.result !== 'success') {
                 Error('Failed Response', 'EXCHANGE_REQUEST_FAILED', res);
+                return next();
             }
 
             // Insert data into DB
@@ -92,17 +94,17 @@ const TRMRouter = (app: Router) => {
                     rate: data.conversion_rate,
                     time: data.time_last_update_utc,
                 };
-                const inserted: any = await trmController.insert(newTRM);
+                const inserted: any = await trmController.create(newTRM);
 
                 res.status(200).json({ result: 'success', data: inserted });
+                return next();
             } catch (e) {
                 Error(e, 'DB_ERROR_INSERTING', res);
+                return next();
             }
-
-            next();
         } catch (e) {
             Error(e, 'EXCHANGE_REQUEST_FAILED', res);
-            next();
+            return next();
         }
     });
 
@@ -141,11 +143,13 @@ const TRMRouter = (app: Router) => {
      *         description: Index from pagination starts
      *     responses:
      *       '200':
-     *         description: Currency rate getted
+     *         description: Paginated list of currencies
      *       '400':
      *         description: No data provided in request query
      *       '404':
      *         description: No data found
+     *       '408':
+     *         description: Bad query format
      *       '500':
      *         description: Unexpected or database error
      */
@@ -156,13 +160,24 @@ const TRMRouter = (app: Router) => {
         // If no required data was provided
         if (!from || !limit) {
             Error(
-                'Insert pagination data (from & limit)',
+                'No pagination data found (from & limit)',
                 'LIST_NO_DATA_PROVIDED',
                 res
             );
-            next();
+            return next();
         }
 
+        const limitNumber: number = parseInt(limit as string);
+        const fromNumber: number = parseInt(from as string);
+
+        if (isNaN(limitNumber) || isNaN(fromNumber)) {
+            Error(
+                'Bad format pagination data (from & limit)',
+                'LIST_WRONG_DATA',
+                res
+            );
+            return next();
+        }
         // Get list
         try {
             let query: any = {};
@@ -177,21 +192,22 @@ const TRMRouter = (app: Router) => {
             // Make query to DB
             const data: Array<TRM> = await trmController.findMany(
                 { ...query },
-                { skip: from, limit }
+                { skip: fromNumber, limit: limitNumber }
             );
 
             // If no data was returned
             if (!data) {
                 Error('No data found', 'LIST_NO_DATA_FOUND', res);
+                return next();
             }
 
             // Response
             res.status(200).json({ result: 'success', data });
-            next();
+            return next();
         } catch (e) {
             // Error handler
             Error('No data found', 'DB_ERROR_GETTING', res);
-            next();
+            return next();
         }
     });
 };
