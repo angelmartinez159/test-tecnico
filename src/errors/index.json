@@ -34,6 +34,11 @@
         "status": 400,
         "code": "400_002"
     },
+    "LIST_WRONG_DATA": {
+        "message": "The from & limit queries must be numbers",
+        "status": 408,
+        "code": "408_000"
+    },
     "LIST_NO_DATA_FOUND": {
         "message": "Any data was returned",
         "status": 404,
