@@ -12,3 +12,6 @@ build
 
 coverage
 ./coverage
+
+.nyc_output
+./.nyc_output
