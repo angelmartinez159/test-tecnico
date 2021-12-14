@@ -2,6 +2,7 @@ import { color } from 'console-log-colors';
 import mongoose from 'mongoose';
 import { dbConfig } from '../config';
 
+// Set Mongo Connection URI, use process.env.NODE_ENV to change config
 const dbUri: string =
     'mongodb://' + dbConfig.host + ':' + dbConfig.port + '/' + dbConfig.name;
 
@@ -11,12 +12,12 @@ const initDatabase = async () => {
             if (err) {
                 console.log(
                     color.red('Error connect database :: '),
-                    color.blue(err)
+                    color.yellow(err)
                 );
             } else {
                 console.log(
-                    color.green('Database connected to :: '),
-                    color.blue(dbUri)
+                    color.blue('Database connected to :: '),
+                    color.yellow(dbUri)
                 );
             }
         });

@@ -15,4 +15,9 @@ export const exchangeConfig: any = {
 
 export const enviroment: any = {
     env: process.env.NODE_ENV,
+    baseUrl: process.env.BASE_URL,
 };
+
+export const corsConfig: any = {
+    origins: process.env.ORIGINS.split(','),
+}

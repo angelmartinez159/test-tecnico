@@ -42,6 +42,7 @@ export default class trmControllers {
     public async findMany(findData: any, parameters: any): Promise<TRM[]> {
         const trms: Array<TRM> = await this.trmModel.find(
             { ...findData },
+            {},
             { ...parameters }
         );
 
@@ -51,6 +52,7 @@ export default class trmControllers {
     public async findOne(findData: any, parameters: any): Promise<TRM> {
         const trms: Array<TRM> = await this.trmModel.find(
             { ...findData },
+            {},
             { ...parameters }
         );
 
